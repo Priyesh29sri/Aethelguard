@@ -1,193 +1,124 @@
-# 🚀 AETHELGARD: Event Horizon
+# Aethelgard: Event Horizon
 
-> **A futuristic hand-controlled space combat game**
+**A browser-based space combat game controlled entirely by hand gestures**
 
-![Hand Tracking Space Game](https://img.shields.io/badge/Control-Hand%20Gestures-00f0ff?style=for-the-badge)
-![Three.js](https://img.shields.io/badge/3D-Three.js-ff00aa?style=for-the-badge)
-![GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-brightgreen?style=for-the-badge)
-
-**Control your spaceship with just your hands** — no keyboard, no controller needed. Wave your hand to steer, pinch to fire, and spread both hands to barrel roll!
-
-## 🎮 Play Now
-
-**[▶️ Play Aethelgard](https://yourusername.github.io/aethelgard/)**  
-*(Replace "yourusername" with your GitHub username after deployment)*
+Play Now: [https://priyesh29sri.github.io/Aethelguard/](https://priyesh29sri.github.io/Aethelguard/)
 
 ---
 
-## 📖 The Story
+## Overview
 
-In the bioluminescent depths of the **Aethelgard Nebula**, you pilot the **Aurelian** — a sentient prototype ship from a vanished civilization. The Vanguard Hegemony is tearing holes in spacetime, and only you can stop them.
+Aethelgard: Event Horizon is an immersive space combat experience where you pilot the Aurelian, a prototype spacecraft, using only your hands. The game uses your webcam to track hand gestures in real-time, translating your movements into ship controls.
+
+Set in the bioluminescent Aethelgard Nebula, you must survive waves of enemy ships while navigating through asteroid fields and nebula gas clouds.
 
 ---
 
-## ✋ Hand Gesture Controls
+## Hand Gesture Controls
 
 | Gesture | Action | Description |
-|:---:|:---|:---|
-| 🖐️ **Open Palm** | **Thrust** | Accelerate forward |
-| ✊ **Closed Fist** | **Brake** | Slow down and stop |
-| 👆 **Point Finger** | **Aim** | Steer your ship direction |
-| 🤏 **Pinch (Right)** | **Fire Primary** | Railgun / current weapon |
-| 🤏 **Pinch (Left)** | **Fire Secondary** | Singularity Harpoon |
-| 🙌 **Spread Hands** | **Barrel Roll** | Evasive dodge (invincibility) |
-| 👐 **Push Forward** | **Boost** | Afterburner (uses energy) |
-| 🤲 **Cup Hands** | **Shield** | Energy dome protection |
+|:---|:---|:---|
+| Open Palm | Thrust | Accelerate forward |
+| Closed Fist | Brake | Decelerate and stop |
+| Point Finger | Aim | Steer ship direction |
+| Pinch (Right Hand) | Fire Primary | Railgun or current weapon |
+| Pinch (Left Hand) | Fire Secondary | Singularity Harpoon |
+| Spread Both Hands | Barrel Roll | Evasive maneuver with invincibility |
+| Push Forward (Both) | Boost | Afterburner acceleration |
+| Cupped Hands | Shield | Activate energy shield |
 
 ---
 
-## ⚔️ Weapons Arsenal
+## Weapons
 
-### Shatter-Railgun ⚡
-High-velocity kinetic slugs that pierce through enemy hulls.
-
-### Solar Flare Beam ☀️
-Sustained thermal laser that melts armor plating.
-
-### Singularity Harpoon 🔮
-Gravity tether that pulls enemies together into collisions.
+| Weapon | Type | Description |
+|:---|:---|:---|
+| Shatter-Railgun | Kinetic | High-velocity projectiles |
+| Solar Flare Beam | Thermal | Continuous laser beam |
+| Singularity Harpoon | Gravity | Tethers and pulls enemies |
 
 ---
 
-## 👾 Enemy Types
+## Enemy Types
 
 | Type | Behavior | Threat Level |
-|:---|:---|:---:|
-| **Vanguard** | Aggressive ramming attacks | 🔴🔴🔴 |
-| **Hunter** | Tactical flanking maneuvers | 🟡🟡 |
-| **Coward** | Hit-and-run, calls reinforcements | 🟢 |
+|:---|:---|:---|
+| Vanguard | Aggressive ramming attacks | High |
+| Hunter | Tactical flanking maneuvers | Medium |
+| Coward | Hit-and-run, calls reinforcements | Low |
 
 ---
 
-## 🛠️ Technical Stack
+## Technical Stack
 
-- **Three.js** - 3D WebGL rendering
-- **MediaPipe Hands** - Real-time hand tracking AI
-- **Web Audio API** - Procedural sound effects
-- **Pure JavaScript** - No build step required
+- Three.js for 3D WebGL rendering
+- MediaPipe Hands for real-time hand tracking
+- Web Audio API for procedural sound effects
+- Pure JavaScript with no build step required
 
 ---
 
-## 🚀 Local Development
+## Local Development
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/aethelgard.git
-cd aethelgard
+git clone https://github.com/Priyesh29sri/Aethelguard.git
+cd Aethelguard
 
-# Serve with any local server (required for ES modules)
+# Serve with any local server
 npx live-server --port=8080
 
 # Or use Python
 python3 -m http.server 8080
 
-# Open in browser
+# Open browser
 open http://localhost:8080
 ```
 
 ---
 
-## 📤 Deploy to GitHub Pages
+## System Requirements
 
-1. **Push to GitHub:**
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit: Aethelgard Event Horizon"
-   git remote add origin https://github.com/yourusername/aethelgard.git
-   git push -u origin main
-   ```
-
-2. **Enable GitHub Pages:**
-   - Go to your repository Settings
-   - Navigate to Pages section
-   - Select "Deploy from branch"
-   - Choose `main` branch and `/ (root)` folder
-   - Save
-
-3. **Access your game:**
-   ```
-   https://yourusername.github.io/aethelgard/
-   ```
-
----
-
-## 📋 Requirements
-
-- Modern browser (Chrome, Edge, Firefox)
-- WebGL 2.0 support
+- Modern web browser with WebGL 2.0 support (Chrome, Edge, or Firefox recommended)
 - Webcam for hand tracking
-- Recommended: Desktop/laptop with decent GPU
+- Desktop or laptop computer
 
 ---
 
-## 🎨 Features
-
-- ✅ Real-time hand gesture control
-- ✅ Stunning volumetric nebula environment
-- ✅ Procedural asteroid fields with destruction
-- ✅ Three unique weapon systems
-- ✅ AI enemies with distinct personalities
-- ✅ Wave-based combat progression
-- ✅ Cyberpunk HUD with radar
-- ✅ Procedural sound effects
-- ✅ No external dependencies required
-- ✅ Instant GitHub Pages deployment
-
----
-
-## 📁 Project Structure
+## Project Structure
 
 ```
-aethelgard/
-├── index.html              # Main entry point
+Aethelguard/
+├── index.html              # Entry point
 ├── styles/
-│   └── main.css            # Cyberpunk UI styling
-├── js/
-│   ├── game.js             # Main game controller
-│   ├── handTracking.js     # MediaPipe hand tracking
-│   ├── engine/
-│   │   ├── renderer.js     # Three.js + post-processing
-│   │   ├── nebula.js       # Volumetric environment
-│   │   └── asteroids.js    # Procedural asteroids
-│   ├── ship/
-│   │   ├── aurelian.js     # Player ship
-│   │   └── weapons.js      # Weapon systems
-│   ├── combat/
-│   │   ├── enemyAI.js      # Enemy behaviors
-│   │   └── waveManager.js  # Wave spawning
-│   ├── ui/
-│   │   └── hud.js          # HUD management
-│   └── audio/
-│       └── soundManager.js # Procedural audio
-└── assets/                 # (Optional) Models, textures
+│   └── main.css            # UI styling
+└── js/
+    ├── game.js             # Main controller
+    ├── handTracking.js     # Gesture recognition
+    ├── engine/
+    │   ├── renderer.js     # Three.js setup
+    │   ├── nebula.js       # Space environment
+    │   └── asteroids.js    # Asteroid field
+    ├── ship/
+    │   ├── aurelian.js     # Player ship
+    │   └── weapons.js      # Weapon systems
+    ├── combat/
+    │   ├── enemyAI.js      # Enemy behaviors
+    │   └── waveManager.js  # Wave spawning
+    ├── ui/
+    │   └── hud.js          # HUD elements
+    └── audio/
+        └── soundManager.js # Sound effects
 ```
 
 ---
 
-## 🎯 Tips for Best Experience
+## License
 
-1. **Good Lighting** - Hand tracking works best in well-lit environments
-2. **Clear Background** - Solid colors behind your hands help accuracy
-3. **Start Slow** - Get comfortable with gestures before intense combat
-4. **Use Both Hands** - Special moves require two-hand gestures
+MIT License
 
 ---
 
-## 📜 License
+## Author
 
-MIT License - Feel free to modify and share!
-
----
-
-## 🌟 Credits
-
-Created with ❤️ using:
-- [Three.js](https://threejs.org/)
-- [MediaPipe](https://google.github.io/mediapipe/)
-- [GSAP](https://greensock.com/gsap/)
-- [Howler.js](https://howlerjs.com/)
-
----
-
-**May your ship navigate true through the Luminous Expanse!** ✨🚀
+Priyesh Srivastava
