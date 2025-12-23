@@ -1,0 +1,1033 @@
+/* ============================================
+   AETHELGARD: EVENT HORIZON
+   Main Stylesheet - Cyberpunk Space Aesthetic
+   ============================================ */
+
+/* CSS Variables - Design Tokens */
+:root {
+    /* Primary Colors */
+    --color-primary: #00f0ff;
+    --color-primary-dark: #00a8b3;
+    --color-primary-glow: rgba(0, 240, 255, 0.5);
+    
+    /* Secondary Colors */
+    --color-secondary: #ff00aa;
+    --color-secondary-dark: #b3007a;
+    --color-secondary-glow: rgba(255, 0, 170, 0.5);
+    
+    /* Accent Colors */
+    --color-accent: #ffaa00;
+    --color-accent-glow: rgba(255, 170, 0, 0.5);
+    
+    /* Status Colors */
+    --color-health: #00ff88;
+    --color-shield: #00aaff;
+    --color-energy: #ffcc00;
+    --color-danger: #ff3344;
+    
+    /* Nebula Colors */
+    --nebula-teal: #0a4d4a;
+    --nebula-purple: #2a1a3a;
+    --nebula-orange: #3a2a1a;
+    
+    /* UI Colors */
+    --bg-dark: #0a0a12;
+    --bg-panel: rgba(10, 20, 30, 0.85);
+    --bg-glass: rgba(0, 20, 40, 0.6);
+    --border-glow: rgba(0, 240, 255, 0.3);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.4);
+    
+    /* Typography */
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'Rajdhani', sans-serif;
+    
+    /* Spacing */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-2xl: 48px;
+    
+    /* Animation */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* ============================================
+   Reset & Base Styles
+   ============================================ */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* ============================================
+   Loading Screen
+   ============================================ */
+
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--nebula-purple) 0%, var(--bg-dark) 50%, var(--nebula-teal) 100%);
+}
+
+.nebula-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(ellipse at 20% 30%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(255, 0, 170, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255, 170, 0, 0.05) 0%, transparent 70%);
+    animation: nebulaPulse 8s ease-in-out infinite;
+}
+
+@keyframes nebulaPulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+.loading-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+}
+
+.logo-container {
+    margin-bottom: var(--spacing-2xl);
+}
+
+.game-title {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10vw, 6rem);
+    font-weight: 900;
+    letter-spacing: 0.3em;
+    color: var(--color-primary);
+    text-shadow: 
+        0 0 10px var(--color-primary-glow),
+        0 0 30px var(--color-primary-glow),
+        0 0 60px var(--color-primary-glow);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+    0% { text-shadow: 0 0 10px var(--color-primary-glow), 0 0 30px var(--color-primary-glow); }
+    100% { text-shadow: 0 0 20px var(--color-primary-glow), 0 0 50px var(--color-primary-glow), 0 0 80px var(--color-primary-glow); }
+}
+
+.game-subtitle {
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 3vw, 1.5rem);
+    font-weight: 400;
+    letter-spacing: 1em;
+    color: var(--color-secondary);
+    margin-top: var(--spacing-sm);
+    text-shadow: 0 0 20px var(--color-secondary-glow);
+}
+
+.loading-bar-container {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    margin: 0 auto var(--spacing-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-glow);
+}
+
+.loading-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    border-radius: 2px;
+    animation: loadingProgress 3s ease-out forwards;
+    box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+@keyframes loadingProgress {
+    0% { width: 0%; }
+    20% { width: 20%; }
+    50% { width: 60%; }
+    80% { width: 85%; }
+    100% { width: 100%; }
+}
+
+.loading-text {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    letter-spacing: 0.3em;
+    color: var(--text-secondary);
+    animation: textPulse 1s ease-in-out infinite;
+}
+
+@keyframes textPulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+}
+
+.loading-tips {
+    margin-top: var(--spacing-2xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.loading-tips p {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    opacity: 0;
+    animation: tipFadeIn 0.5s ease forwards;
+}
+
+.loading-tips p:nth-child(1) { animation-delay: 1s; }
+.loading-tips p:nth-child(2) { animation-delay: 1.5s; }
+.loading-tips p:nth-child(3) { animation-delay: 2s; }
+
+@keyframes tipFadeIn {
+    to { opacity: 1; }
+}
+
+/* ============================================
+   Permission Screen
+   ============================================ */
+
+#permission-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+    background: var(--bg-dark);
+}
+
+.permission-content {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    max-width: 400px;
+}
+
+.camera-icon {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-lg);
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.permission-content h2 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+}
+
+.permission-content p {
+    color: var(--text-secondary);
+    margin-bottom: var(--spacing-xl);
+}
+
+/* ============================================
+   Cyber Button
+   ============================================ */
+
+.cyber-button {
+    font-family: var(--font-display);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: transparent;
+    border: 2px solid var(--color-primary);
+    color: var(--color-primary);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+}
+
+.cyber-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--color-primary-glow), transparent);
+    transition: left var(--transition-normal);
+}
+
+.cyber-button:hover {
+    background: var(--color-primary);
+    color: var(--bg-dark);
+    box-shadow: 0 0 30px var(--color-primary-glow);
+}
+
+.cyber-button:hover::before {
+    left: 100%;
+}
+
+.cyber-button.primary {
+    background: var(--color-primary);
+    color: var(--bg-dark);
+}
+
+.cyber-button.primary:hover {
+    background: var(--color-secondary);
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 30px var(--color-secondary-glow);
+}
+
+/* ============================================
+   Main Menu
+   ============================================ */
+
+#main-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 800;
+}
+
+#menu-bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+.menu-content {
+    text-align: center;
+    z-index: 1;
+}
+
+.menu-logo h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--color-primary);
+    text-shadow: 0 0 30px var(--color-primary-glow);
+}
+
+.menu-logo h2 {
+    font-family: var(--font-display);
+    font-size: clamp(0.875rem, 2vw, 1.25rem);
+    font-weight: 400;
+    letter-spacing: 0.8em;
+    color: var(--color-secondary);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.hand-status {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+}
+
+.hand-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--spacing-md);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    min-width: 120px;
+}
+
+.hand-icon {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.hand-label {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+}
+
+.hand-state {
+    font-size: 0.75rem;
+    color: var(--color-accent);
+    animation: textPulse 1s ease-in-out infinite;
+}
+
+.hand-indicator.detected .hand-state {
+    color: var(--color-health);
+    animation: none;
+}
+
+/* ============================================
+   Game Container
+   ============================================ */
+
+#game-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+#game-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#hand-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+}
+
+#hand-overlay {
+    position: absolute;
+    bottom: var(--spacing-lg);
+    left: var(--spacing-lg);
+    width: 200px;
+    height: 150px;
+    border: 2px solid var(--border-glow);
+    border-radius: 8px;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+    opacity: 0.8;
+    z-index: 200;
+}
+
+/* ============================================
+   HUD
+   ============================================ */
+
+#hud {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 150;
+}
+
+.hud-section {
+    position: absolute;
+    padding: var(--spacing-lg);
+}
+
+.hud-section.top-left { top: 0; left: 0; }
+.hud-section.top-right { top: 0; right: 0; text-align: right; }
+.hud-section.bottom-left { bottom: 0; left: 0; }
+.hud-section.bottom-right { bottom: 0; right: 0; }
+
+/* Ship Status */
+.ship-name {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    letter-spacing: 0.3em;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-md);
+    text-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+.status-bars {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.status-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.status-bar .label {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+    width: 60px;
+}
+
+.bar-container {
+    width: 150px;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bar-fill {
+    height: 100%;
+    width: 100%;
+    border-radius: 3px;
+    transition: width var(--transition-fast);
+}
+
+.status-bar.hull .bar-fill { background: linear-gradient(90deg, var(--color-danger), var(--color-health)); }
+.status-bar.shield .bar-fill { background: linear-gradient(90deg, var(--color-primary-dark), var(--color-shield)); }
+.status-bar.energy .bar-fill { background: linear-gradient(90deg, var(--color-accent), var(--color-energy)); }
+
+.status-bar .value {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    color: var(--text-primary);
+    width: 45px;
+}
+
+/* Score Display */
+.score-display, .combo-display, .wave-display {
+    margin-bottom: var(--spacing-sm);
+}
+
+.score-display .label, .combo-display .label, .wave-display .label {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+    display: block;
+}
+
+.score-display .value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-accent);
+    text-shadow: 0 0 10px var(--color-accent-glow);
+}
+
+.combo-display .value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-secondary);
+}
+
+.wave-display .value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+/* Weapon Slots */
+.weapon-slots, .gadget-slots {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+.weapon-slot, .gadget-slot {
+    width: 80px;
+    padding: var(--spacing-sm);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.weapon-slot.active {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 15px var(--color-primary-glow);
+}
+
+.weapon-icon, .gadget-icon {
+    font-size: 1.5rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.weapon-name, .gadget-name {
+    font-family: var(--font-display);
+    font-size: 0.5rem;
+    letter-spacing: 0.1em;
+    color: var(--text-secondary);
+}
+
+.weapon-cooldown {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: var(--color-primary);
+    transform-origin: left;
+    transform: scaleX(0);
+}
+
+/* Crosshair */
+#crosshair {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.crosshair-ring {
+    position: absolute;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    opacity: 0.8;
+}
+
+.crosshair-ring.outer {
+    width: 60px;
+    height: 60px;
+    top: -30px;
+    left: -30px;
+    animation: crosshairRotate 10s linear infinite;
+}
+
+.crosshair-ring.inner {
+    width: 30px;
+    height: 30px;
+    top: -15px;
+    left: -15px;
+    border-style: dashed;
+    animation: crosshairRotate 5s linear infinite reverse;
+}
+
+.crosshair-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--color-primary);
+    border-radius: 50%;
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    box-shadow: 0 0 10px var(--color-primary-glow);
+}
+
+@keyframes crosshairRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Radar */
+#radar {
+    position: absolute;
+    bottom: var(--spacing-lg);
+    right: calc(var(--spacing-lg) + 270px);
+    width: 120px;
+    height: 120px;
+    border: 2px solid var(--border-glow);
+    border-radius: 50%;
+    background: var(--bg-glass);
+    backdrop-filter: blur(10px);
+}
+
+.radar-ring {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    border-radius: 50%;
+}
+
+.radar-sweep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--color-primary), transparent);
+    transform-origin: left center;
+    animation: radarSweep 3s linear infinite;
+}
+
+@keyframes radarSweep {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.radar-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    background: var(--color-health);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--color-health);
+}
+
+/* Speed Indicator */
+#speed-indicator {
+    position: absolute;
+    left: 50%;
+    bottom: var(--spacing-lg);
+    transform: translateX(-50%);
+    text-align: center;
+    background: var(--bg-glass);
+    padding: var(--spacing-md) var(--spacing-xl);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.speed-label {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    letter-spacing: 0.3em;
+    color: var(--text-secondary);
+}
+
+.speed-value {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.speed-unit {
+    font-family: var(--font-display);
+    font-size: 0.5rem;
+    letter-spacing: 0.2em;
+    color: var(--text-muted);
+}
+
+/* Gesture Feedback */
+#gesture-feedback {
+    position: absolute;
+    top: 50%;
+    left: var(--spacing-lg);
+    transform: translateY(-50%);
+    text-align: center;
+    background: var(--bg-glass);
+    padding: var(--spacing-md);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+}
+
+.gesture-icon {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.gesture-name {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    letter-spacing: 0.2em;
+    color: var(--color-primary);
+}
+
+/* ============================================
+   Pause Menu
+   ============================================ */
+
+#pause-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 300;
+    pointer-events: auto;
+}
+
+.pause-content {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    background: var(--bg-glass);
+    border: 1px solid var(--border-glow);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+}
+
+.pause-content h2 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.pause-content button {
+    display: block;
+    width: 100%;
+    margin-bottom: var(--spacing-md);
+}
+
+/* ============================================
+   Game Over
+   ============================================ */
+
+#game-over {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(10, 0, 0, 0.9);
+    z-index: 300;
+    pointer-events: auto;
+}
+
+.game-over-content {
+    text-align: center;
+    padding: var(--spacing-2xl);
+}
+
+.game-over-content h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 6vw, 4rem);
+    letter-spacing: 0.2em;
+    color: var(--color-danger);
+    text-shadow: 0 0 30px rgba(255, 51, 68, 0.5);
+    margin-bottom: var(--spacing-xl);
+    animation: titleGlow 1s ease-in-out infinite alternate;
+}
+
+.final-stats {
+    display: flex;
+    justify-content: center;
+    gap: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.final-stats .stat {
+    text-align: center;
+}
+
+.final-stats .label {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: var(--text-secondary);
+    display: block;
+    margin-bottom: var(--spacing-xs);
+}
+
+.final-stats .value {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.game-over-content button {
+    margin: var(--spacing-sm);
+}
+
+/* ============================================
+   Tutorial Overlay
+   ============================================ */
+
+#tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 400;
+}
+
+.tutorial-content {
+    text-align: center;
+    padding: var(--spacing-2xl);
+    max-width: 600px;
+}
+
+.tutorial-content h2 {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    letter-spacing: 0.3em;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-xl);
+}
+
+.tutorial-steps {
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tutorial-step {
+    display: none;
+}
+
+.tutorial-step.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.gesture-demo {
+    font-size: 6rem;
+    margin-bottom: var(--spacing-lg);
+    animation: float 2s ease-in-out infinite;
+}
+
+.tutorial-step h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.2em;
+    color: var(--color-accent);
+    margin-bottom: var(--spacing-md);
+}
+
+.tutorial-step p {
+    color: var(--text-secondary);
+    font-size: 1.125rem;
+}
+
+.tutorial-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-lg);
+    margin: var(--spacing-xl) 0;
+}
+
+.tutorial-dots {
+    display: flex;
+    gap: var(--spacing-sm);
+}
+
+#tutorial-close {
+    margin-top: var(--spacing-lg);
+}
+
+/* ============================================
+   Responsive Design
+   ============================================ */
+
+@media (max-width: 768px) {
+    .hud-section {
+        padding: var(--spacing-sm);
+    }
+    
+    .bar-container {
+        width: 100px;
+    }
+    
+    .weapon-slots, .gadget-slots {
+        flex-direction: column;
+    }
+    
+    .weapon-slot, .gadget-slot {
+        width: 60px;
+        padding: var(--spacing-xs);
+    }
+    
+    #radar {
+        width: 80px;
+        height: 80px;
+        right: calc(var(--spacing-sm) + 80px);
+    }
+    
+    #hand-overlay {
+        width: 120px;
+        height: 90px;
+    }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+
+.shake {
+    animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.flash {
+    animation: flash 0.3s ease;
+}
+
+@keyframes flash {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+}

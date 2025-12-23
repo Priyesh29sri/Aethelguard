@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aethelgard: Event Horizon - Hand-Controlled Space Combat</title>
+    <meta name="description" content="An immersive space combat odyssey controlled by your hands. Experience atmospheric space warfare in the Luminous Expanse.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="logo-container">
+                <h1 class="game-title">AETHELGARD</h1>
+                <h2 class="game-subtitle">EVENT HORIZON</h2>
+            </div>
+            <div class="loading-bar-container">
+                <div class="loading-bar"></div>
+            </div>
+            <p class="loading-text">INITIALIZING NEURAL LINK...</p>
+            <div class="loading-tips">
+                <p>🖐️ Open palm to thrust forward</p>
+                <p>✊ Clench fist to brake</p>
+                <p>🤏 Pinch to fire weapons</p>
+            </div>
+        </div>
+        <div class="nebula-bg"></div>
+    </div>
+
+    <!-- Permission Request Screen -->
+    <div id="permission-screen" class="hidden">
+        <div class="permission-content">
+            <div class="camera-icon">📷</div>
+            <h2>CAMERA ACCESS REQUIRED</h2>
+            <p>Aethelgard uses your camera for hand tracking controls.<br>No video is recorded or transmitted.</p>
+            <button id="enable-camera-btn" class="cyber-button">ENABLE NEURAL LINK</button>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="main-menu" class="hidden">
+        <div class="menu-content">
+            <div class="menu-logo">
+                <h1>AETHELGARD</h1>
+                <h2>EVENT HORIZON</h2>
+            </div>
+            <div class="menu-buttons">
+                <button id="start-game-btn" class="cyber-button primary">LAUNCH MISSION</button>
+                <button id="tutorial-btn" class="cyber-button">TRAINING SIM</button>
+                <button id="settings-btn" class="cyber-button">SHIP SYSTEMS</button>
+            </div>
+            <div class="hand-status">
+                <div class="hand-indicator left-hand">
+                    <span class="hand-icon">🤚</span>
+                    <span class="hand-label">LEFT</span>
+                    <span class="hand-state">SEARCHING...</span>
+                </div>
+                <div class="hand-indicator right-hand">
+                    <span class="hand-icon">🖐️</span>
+                    <span class="hand-label">RIGHT</span>
+                    <span class="hand-state">SEARCHING...</span>
+                </div>
+            </div>
+        </div>
+        <canvas id="menu-bg-canvas"></canvas>
+    </div>
+
+    <!-- Game Container -->
+    <div id="game-container" class="hidden">
+        <!-- Three.js Canvas -->
+        <canvas id="game-canvas"></canvas>
+        
+        <!-- Hand Tracking Video (hidden, for processing) -->
+        <video id="hand-video" autoplay playsinline></video>
+        
+        <!-- Hand Tracking Debug Overlay -->
+        <canvas id="hand-overlay"></canvas>
+        
+        <!-- HUD -->
+        <div id="hud">
+            <!-- Top Left: Ship Status -->
+            <div class="hud-section top-left">
+                <div class="ship-name">THE AURELIAN</div>
+                <div class="status-bars">
+                    <div class="status-bar hull">
+                        <span class="label">HULL</span>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="hull-bar"></div>
+                        </div>
+                        <span class="value" id="hull-value">100%</span>
+                    </div>
+                    <div class="status-bar shield">
+                        <span class="label">SHIELD</span>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="shield-bar"></div>
+                        </div>
+                        <span class="value" id="shield-value">100%</span>
+                    </div>
+                    <div class="status-bar energy">
+                        <span class="label">ENERGY</span>
+                        <div class="bar-container">
+                            <div class="bar-fill" id="energy-bar"></div>
+                        </div>
+                        <span class="value" id="energy-value">100%</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Right: Score & Wave -->
+            <div class="hud-section top-right">
+                <div class="score-display">
+                    <span class="label">SCORE</span>
+                    <span class="value" id="score-value">0</span>
+                </div>
+                <div class="combo-display">
+                    <span class="label">COMBO</span>
+                    <span class="value" id="combo-value">x1</span>
+                </div>
+                <div class="wave-display">
+                    <span class="label">WAVE</span>
+                    <span class="value" id="wave-value">1</span>
+                </div>
+            </div>
+            
+            <!-- Bottom Left: Weapons -->
+            <div class="hud-section bottom-left">
+                <div class="weapon-slots">
+                    <div class="weapon-slot active" id="weapon-1">
+                        <div class="weapon-icon">⚡</div>
+                        <div class="weapon-name">RAILGUN</div>
+                        <div class="weapon-cooldown"></div>
+                    </div>
+                    <div class="weapon-slot" id="weapon-2">
+                        <div class="weapon-icon">☀️</div>
+                        <div class="weapon-name">SOLAR FLARE</div>
+                        <div class="weapon-cooldown"></div>
+                    </div>
+                    <div class="weapon-slot" id="weapon-3">
+                        <div class="weapon-icon">🔮</div>
+                        <div class="weapon-name">HARPOON</div>
+                        <div class="weapon-cooldown"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Right: Gadgets -->
+            <div class="hud-section bottom-right">
+                <div class="gadget-slots">
+                    <div class="gadget-slot" id="gadget-1">
+                        <div class="gadget-icon">🌫️</div>
+                        <div class="gadget-name">SHROUD</div>
+                    </div>
+                    <div class="gadget-slot" id="gadget-2">
+                        <div class="gadget-icon">💥</div>
+                        <div class="gadget-name">EMP</div>
+                    </div>
+                    <div class="gadget-slot" id="gadget-3">
+                        <div class="gadget-icon">👻</div>
+                        <div class="gadget-name">DECOY</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Center: Crosshair -->
+            <div id="crosshair">
+                <div class="crosshair-ring outer"></div>
+                <div class="crosshair-ring inner"></div>
+                <div class="crosshair-dot"></div>
+            </div>
+            
+            <!-- Radar -->
+            <div id="radar">
+                <div class="radar-ring"></div>
+                <div class="radar-sweep"></div>
+                <div class="radar-center"></div>
+            </div>
+            
+            <!-- Speed Indicator -->
+            <div id="speed-indicator">
+                <div class="speed-label">VELOCITY</div>
+                <div class="speed-value" id="speed-value">0</div>
+                <div class="speed-unit">M/S</div>
+            </div>
+            
+            <!-- Gesture Feedback -->
+            <div id="gesture-feedback">
+                <div class="gesture-icon" id="current-gesture">🖐️</div>
+                <div class="gesture-name" id="gesture-name">IDLE</div>
+            </div>
+        </div>
+        
+        <!-- Pause Menu -->
+        <div id="pause-menu" class="hidden">
+            <div class="pause-content">
+                <h2>SYSTEMS PAUSED</h2>
+                <button id="resume-btn" class="cyber-button">RESUME</button>
+                <button id="quit-btn" class="cyber-button">ABORT MISSION</button>
+            </div>
+        </div>
+        
+        <!-- Game Over Screen -->
+        <div id="game-over" class="hidden">
+            <div class="game-over-content">
+                <h1>SHIP DESTROYED</h1>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="label">FINAL SCORE</span>
+                        <span class="value" id="final-score">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">WAVES SURVIVED</span>
+                        <span class="value" id="final-waves">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="label">ENEMIES DESTROYED</span>
+                        <span class="value" id="final-kills">0</span>
+                    </div>
+                </div>
+                <button id="restart-btn" class="cyber-button primary">RELAUNCH</button>
+                <button id="menu-btn" class="cyber-button">MAIN MENU</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutorial Overlay -->
+    <div id="tutorial-overlay" class="hidden">
+        <div class="tutorial-content">
+            <h2>PILOT TRAINING</h2>
+            <div class="tutorial-steps">
+                <div class="tutorial-step active" data-step="1">
+                    <div class="gesture-demo">🖐️</div>
+                    <h3>THRUST</h3>
+                    <p>Open your palm facing the camera to accelerate forward</p>
+                </div>
+                <div class="tutorial-step" data-step="2">
+                    <div class="gesture-demo">✊</div>
+                    <h3>BRAKE</h3>
+                    <p>Clench your fist to slow down and stop</p>
+                </div>
+                <div class="tutorial-step" data-step="3">
+                    <div class="gesture-demo">👆</div>
+                    <h3>AIM</h3>
+                    <p>Point your index finger to steer your ship</p>
+                </div>
+                <div class="tutorial-step" data-step="4">
+                    <div class="gesture-demo">🤏</div>
+                    <h3>FIRE</h3>
+                    <p>Pinch your thumb and index finger to fire weapons</p>
+                </div>
+                <div class="tutorial-step" data-step="5">
+                    <div class="gesture-demo">🙌</div>
+                    <h3>BARREL ROLL</h3>
+                    <p>Spread both hands apart to perform an evasive roll</p>
+                </div>
+            </div>
+            <div class="tutorial-nav">
+                <button id="tutorial-prev" class="cyber-button">◀ PREV</button>
+                <div class="tutorial-dots"></div>
+                <button id="tutorial-next" class="cyber-button">NEXT ▶</button>
+            </div>
+            <button id="tutorial-close" class="cyber-button primary">BEGIN SIMULATION</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    
+    <!-- MediaPipe -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.4.1675469240/hands.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.3.1675466862/camera_utils.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.3.1675466124/drawing_utils.min.js"></script>
+    
+    <!-- Howler.js for Audio -->
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.4/dist/howler.min.js"></script>
+    
+    <!-- GSAP for Animations -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.4/dist/gsap.min.js"></script>
+    
+    <!-- Game Modules -->
+    <script type="module" src="js/game.js"></script>
+</body>
+</html>
